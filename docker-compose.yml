@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  ssh-server:
+    container_name: ssh-server
+    hostname: SSH-SERVER
+    build:
+      context: ./ssh_server
+    ports:
+      - "2222:22"
+    networks:
+      - sshnet
+    privileged: true
+
+  client:
+    container_name: client
+    hostname: CLIENT-SERVER
+    build:
+      context: ./client
+    depends_on:
+      - ssh-server
+    networks:
+      - sshnet
+    stdin_open: true
+    tty: true
+
+networks:
+  sshnet:
+    driver: bridge
